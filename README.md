@@ -26,7 +26,7 @@ The dataset simulates a song streaming service and is about 12GB. The dataset is
 
 Besides standard user information fields, some unique fields for this dataset include:
 
-1. The page ("page") the user clicked on, which is one of the following (shown together with the corresponding counts):
+1. The page ("page") the user clicks on, which is one of the following (shown together with the corresponding counts):
 
 ```
 +-------------------------+--------+
@@ -156,7 +156,7 @@ So these are the customers with higher probabilities to churn:
 
 3. downgrade_recent: Once a customer downgrades his/her service, it's more likely to finally cancel the service.
 
-4. roll_avert: It's not clear from the documentation what this means. But it's clear that when this happens, the customer is more likely to churn.
+4. roll_advert: It's not clear from the documentation what this means. Maybe it means closing the advertisement? But it's clear that when this happens, the customer is more likely to churn.
 
 5. last_level_paid: Well, this just means free service is preferred.
 
@@ -164,10 +164,8 @@ So these are the customers with higher probabilities to churn:
 
 ### Notes on some procedures that may seem uncommon
 1. For xgboost  
-Normally, one would also tune the n_estimators with the other parameters using cross-validation. However, I believe it is better to use the eval_set with early_stopping_rounds. By doing so, the best n_estimators can be found at the point where the validation error just starts to rise and without extra tuning. A special class CV_xgboost is written for this purpose. It inherits from CVResultAnalyzer and helps to produce figures as in out[28] and tables as in out[29], but not needed if fitting the xgboost model is the only concern.   
-Another advantage for using this class is that it essentially generates a suite of xgboost models (same number as the number of folds), and can apply bagging at the end. My experience is it can reduce the error by about 0.002 in f1 or auc score.  
+Normally, one would also tune the n_estimators with the other parameters using cross-validation. However, I believe it is better to use the eval_set with early_stopping_rounds. By doing so, the best n_estimators can be found at the point where the validation error just starts to rise and without extra tuning. A special class CV_xgboost is written for this purpose. It inherits from CVResultAnalyzer and helps to produce figures as in out[28] and tables as in out[29]. Another advantage for using this class is that it essentially generates a suite of xgboost models (same number as the number of folds), and can apply bagging at the end. My experience is that it can reduce the error by about 0.002 in f1 or auc score in many modeling problems. 
 
 
 2. For stacking  
-Normally, say we have 3 models, one would fit each model to the entire dataset, generate predicted probabilities for each model, then apply cross-validation to tune the stacking model being fit on these probabilities. I normally just use logistic regression for the stacking model, but one can use other models as well.  
-However, there is some data leakage in this procedure. The reason is that each of the 3 models have already seen the entire dataset, thus the validation set in the cv for the stacking model is not completely safe. The Stacker class is written to get around this problem by only fitting the initial 3 models on the training set for each split. But at the end of the day, the improvement is fairly small and this class is mainly used as a conceptually safe guard.
+Normally, say we have 3 models, one would fit each model to the entire dataset, generate predicted probabilities for each model, then apply cross-validation to tune the stacking model that uses these probabilities for the final classification. I usually just use logistic regression for the stacking model, but one can use other models as well. However, there is some data leakage in this procedure. The reason is that each of the 3 models have already seen the entire dataset, thus the validation set in the cv for the stacking model is not completely safe. The Stacker class is written to get around this particular problem by only fitting the initial 3 models on the training set for each split. But at the end of the day, the improvement is fairly small and this class is mainly used as a conceptually safe guard.
