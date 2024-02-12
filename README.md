@@ -4,17 +4,17 @@
 This is the capstone project for Udacity Data Scientist Nanodegree. The purpose is to predict whether a user will "churn" or not. "churn" here is defined as users that confirm cancellation of services. 
 
 ### Files for examination
-modeling-final-full_dataset-new-no-state.ipynb: the final notebook for modeling
++ **modeling-final-full_dataset-new-no-state.ipynb**: the final notebook for modeling
 
-shap-analysis: shap value analysis on the preferred xgboost model
++ **shap-analysis**: shap value analysis on the preferred xgboost model
 
-README_ally.md: a readme file that documents all necessary processing steps, including description of the original dataset, EDA and feature engineering, modeling and shap-value analysis.
++ **README.md**: a readme file that documents all necessary processing steps, including description of the original dataset, EDA and feature engineering, modeling and shap-value analysis.
 
 For completeness, some other files are also included but probably not useful for examination:
 
-ETL-pyspark-full_dataset.ipynb: the complete pipeline for doing feature extraction from the original dataset to the assembled csv file using PySpark.
++ ETL-pyspark-full_dataset.ipynb: the complete pipeline for doing feature extraction from the original dataset to the assembled csv file using PySpark.
 
-cv_result_analyzer.py: helper class to analyzer cross-validation results.
++ cv_result_analyzer.py: helper class to analyzer cross-validation results.
 
 
 ### Dataset
