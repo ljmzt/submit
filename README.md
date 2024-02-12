@@ -163,11 +163,11 @@ So these are the customers with higher probabilities to churn:
 6. thumbs_down: This is probably the most expected feature. Maybe we need to give some discounts when users keep pressing the thumbs-down button?
 
 ### Notes on some procedures that may seem uncommon
-1. For xgboost
-Normally, one would also tune the n_estimators with the other parameters using cross-validation. However, I believe it is better to use the eval_set with early_stopping_rounds. By doing so, the best n_estimators can be found at the point where the validation error just starts to rise and without extra tuning. A special class CV_xgboost is written for this purpose. It inherits from CVResultAnalyzer and helps to produce figures as in out[28] and tables as in out[29], but not needed if fitting the xgboost model is the only concern. 
+1. For xgboost  
+Normally, one would also tune the n_estimators with the other parameters using cross-validation. However, I believe it is better to use the eval_set with early_stopping_rounds. By doing so, the best n_estimators can be found at the point where the validation error just starts to rise and without extra tuning. A special class CV_xgboost is written for this purpose. It inherits from CVResultAnalyzer and helps to produce figures as in out[28] and tables as in out[29], but not needed if fitting the xgboost model is the only concern.   
 Another advantage for using this class is that it essentially generates a suite of xgboost models (same number as the number of folds), and can apply bagging at the end. My experience is it can reduce the error by about 0.002 in f1 or auc score.  
 
 
-2. For stacking
-Normally, say we have 3 models, one would fit each model to the entire dataset, generate predicted probabilities for each model, then apply cross-validation to tune the stacking model being fit on these probabilities. I normally just use logistic regression for the stacking model, but one can use other models as well.
+2. For stacking  
+Normally, say we have 3 models, one would fit each model to the entire dataset, generate predicted probabilities for each model, then apply cross-validation to tune the stacking model being fit on these probabilities. I normally just use logistic regression for the stacking model, but one can use other models as well.  
 However, there is some data leakage in this procedure. The reason is that each of the 3 models have already seen the entire dataset, thus the validation set in the cv for the stacking model is not completely safe. The Stacker class is written to get around this problem by only fitting the initial 3 models on the training set for each split. But at the end of the day, the improvement is fairly small and this class is mainly used as a conceptually safe guard.
